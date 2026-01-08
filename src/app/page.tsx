@@ -10,7 +10,9 @@ export default function Home() {
           .desktop-image-container,
           .desktop-bg-overlay,
           .tablet-image-container,
-          .tablet-bg-overlay {
+          .tablet-bg-overlay,
+          .mobile-image-container,
+          .mobile-bg-overlay {
             display: none !important;
             visibility: hidden !important;
             pointer-events: none !important;
@@ -38,13 +40,13 @@ export default function Home() {
           @media (max-width: 639px) {
             .content-wrapper {
               margin-top: 0 !important;
-              padding-top: 310px !important; /* Main navbar (48px) + Banner (33vh) + Mobile image (192px) + extra spacing */
+              padding-top: calc(48px + 33vh + 20px) !important; /* Main navbar (48px) + Banner (33vh) + spacing */
             }
           }
           /* Add more space at 640px-720px width */
           @media (min-width: 640px) and (max-width: 720px) {
             .content-wrapper {
-              padding-top: 340px !important; /* Main navbar (60px) + Banner (33vh) + Mobile image (224px) + extra spacing */
+              padding-top: calc(60px + 33vh + 20px) !important; /* Main navbar (60px) + Banner (33vh) + spacing */
             }
           }
           /* Tablet and above - adjust padding for banner navbar */
@@ -57,12 +59,12 @@ export default function Home() {
           /* Mobile padding adjustments */
           @media (max-width: 639px) {
             .content-wrapper {
-              padding-top: 310px !important; /* Increased from 280px */
+              padding-top: calc(48px + 33vh + 20px) !important; /* Main navbar + Banner + spacing */
             }
           }
           @media (min-width: 640px) and (max-width: 767px) {
             .content-wrapper {
-              padding-top: 340px !important; /* Increased from 300px */
+              padding-top: calc(60px + 33vh + 20px) !important; /* Main navbar + Banner + spacing */
             }
           }
           @media (max-width: 767px) {
@@ -73,21 +75,6 @@ export default function Home() {
             [class*="fixed"] {
               -webkit-font-smoothing: antialiased;
               -moz-osx-font-smoothing: grayscale;
-            }
-            /* Mobile image - attached right at navbar bottom (no gap) */
-            .mobile-image-container {
-              top: 48px !important; /* Match navbar height exactly */
-            }
-            .mobile-bg-overlay {
-              top: 48px !important; /* Match navbar height exactly */
-            }
-            @media (min-width: 640px) {
-              .mobile-image-container {
-                top: 60px !important; /* Match navbar height on sm */
-              }
-              .mobile-bg-overlay {
-                top: 60px !important; /* Match navbar height on sm */
-              }
             }
           }
         `
@@ -145,30 +132,9 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Background overlays to prevent content showing behind images - Must be above content but below images */}
-      {/* Mobile: Background above content area - covers entire top section */}
-      {/* Navbar height: py-2 (8px) + content (~44px) + py-2 (8px) = ~60px, py-2.5 (10px) + content (~52px) + py-2.5 (10px) = ~72px on sm */}
-      <div className="mobile-bg-overlay fixed left-0 right-0 z-35 md:hidden bg-white" style={{ height: '192px' }}></div>
-
-      {/* Fixed Campaign Image - Responsive for Mobile, Tablet, Laptop */}
-      {/* Mobile: Fixed at top, full width - starts right below navbar (no gap) */}
-      {/* Navbar height: py-2 (8px) + content (~44px) + py-2 (8px) = ~60px, py-2.5 (10px) + content (~52px) + py-2.5 (10px) = ~72px on sm */}
-      <div className="mobile-image-container fixed left-0 right-0 z-40 md:hidden bg-white shadow-lg">
-        <div className="relative w-full h-48 sm:h-56 overflow-hidden ring-2 ring-pink-300 bg-white px-2 py-2">
-          <Image
-            src="/campaign-image.jpeg"
-            alt="Campaign"
-            width={600}
-            height={300}
-            className="w-full h-full object-contain rounded-lg"
-            priority
-            sizes="100vw"
-          />
-        </div>
-      </div>
 
       {/* Content - Responsive padding for all screen sizes */}
-      <div className="content-wrapper relative z-10 pt-[280px] sm:pt-[300px] pb-6 sm:pb-8" style={{ 
+      <div className="content-wrapper relative z-10 pb-6 sm:pb-8" style={{ 
         width: '100%', 
         maxWidth: '100vw', 
         boxSizing: 'border-box', 
