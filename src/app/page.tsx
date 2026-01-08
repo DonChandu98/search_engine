@@ -6,24 +6,23 @@ export default function Home() {
     <>
       <style dangerouslySetInnerHTML={{
         __html: `
-          @media (max-width: 767px) {
-            .tablet-image-container,
-            .desktop-image-container,
-            .tablet-bg-overlay,
-            .desktop-bg-overlay {
-              display: none !important;
-              visibility: hidden !important;
-              pointer-events: none !important;
-              opacity: 0 !important;
-            }
+          /* Hide all sidebars on all screen sizes */
+          .desktop-image-container,
+          .desktop-bg-overlay,
+          .tablet-image-container,
+          .tablet-bg-overlay {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            opacity: 0 !important;
           }
-          @media (min-width: 768px) and (max-width: 1023px) {
-            .desktop-image-container,
-            .desktop-bg-overlay {
-              display: none !important;
-              visibility: hidden !important;
-              pointer-events: none !important;
-              opacity: 0 !important;
+          /* Banner navbar positioning */
+          .banner-navbar {
+            top: 48px !important; /* Default for mobile - below main navbar */
+          }
+          @media (min-width: 640px) {
+            .banner-navbar {
+              top: 60px !important; /* Match main navbar height on sm and above */
             }
           }
           /* Ensure content doesn't render behind fixed images */
@@ -39,13 +38,31 @@ export default function Home() {
           @media (max-width: 639px) {
             .content-wrapper {
               margin-top: 0 !important;
-              padding-top: 280px !important;
+              padding-top: 310px !important; /* Main navbar (48px) + Banner (33vh) + Mobile image (192px) + extra spacing */
             }
           }
           /* Add more space at 640px-720px width */
           @media (min-width: 640px) and (max-width: 720px) {
             .content-wrapper {
-              padding-top: 320px !important;
+              padding-top: 340px !important; /* Main navbar (60px) + Banner (33vh) + Mobile image (224px) + extra spacing */
+            }
+          }
+          /* Tablet and above - adjust padding for banner navbar */
+          @media (min-width: 768px) {
+            .content-wrapper {
+              padding-top: calc(60px + 33vh + 40px) !important; /* Main navbar (60px) + Banner navbar (33vh) + spacing (40px) */
+              padding-left: 0 !important; /* No sidebar on tablet */
+            }
+          }
+          /* Mobile padding adjustments */
+          @media (max-width: 639px) {
+            .content-wrapper {
+              padding-top: 310px !important; /* Increased from 280px */
+            }
+          }
+          @media (min-width: 640px) and (max-width: 767px) {
+            .content-wrapper {
+              padding-top: 340px !important; /* Increased from 300px */
             }
           }
           @media (max-width: 767px) {
@@ -71,12 +88,6 @@ export default function Home() {
               .mobile-bg-overlay {
                 top: 60px !important; /* Match navbar height on sm */
               }
-            }
-          }
-          /* Add bottom margin to tablet image container at 640px-720px */
-          @media (min-width: 640px) and (max-width: 720px) {
-            .tablet-image-container > div {
-              margin-bottom: 10px !important;
             }
           }
         `
@@ -113,17 +124,31 @@ export default function Home() {
           </div>
         </div>
       </div>
-      
+
+      {/* Banner Navbar - For marketing banner image (dimensions to be provided by graphics team) */}
+      {/* Current height: 33vh (1/3 of screen height) - Update this when graphics team provides image */}
+      <div className="banner-navbar fixed left-0 right-0 z-45 w-full bg-white shadow-md border-b-2 border-pink-300" style={{ height: '33vh', boxSizing: 'border-box' }}>
+        <div className="relative w-full h-full overflow-hidden">
+          {/* TODO: Replace with actual banner image from graphics team */}
+          {/* Recommended dimensions: 1920px width x 720px height (for 2.67:1 aspect ratio, assuming 1080p screen) */}
+          {/* Banner height is 33vh (1/3 of screen) - adjust image aspect ratio accordingly */}
+          <Image
+            src="/campaign-image.jpeg"
+            alt="Marketing Banner"
+            width={1920}
+            height={720}
+            className="w-full h-full object-cover"
+            style={{ objectPosition: 'center' }}
+            priority
+            sizes="100vw"
+          />
+        </div>
+      </div>
+
       {/* Background overlays to prevent content showing behind images - Must be above content but below images */}
       {/* Mobile: Background above content area - covers entire top section */}
       {/* Navbar height: py-2 (8px) + content (~44px) + py-2 (8px) = ~60px, py-2.5 (10px) + content (~52px) + py-2.5 (10px) = ~72px on sm */}
       <div className="mobile-bg-overlay fixed left-0 right-0 z-35 md:hidden bg-white" style={{ height: '192px' }}></div>
-      
-      {/* Tablet: Background on left side - full height coverage */}
-      <div className="tablet-bg-overlay hidden md:block lg:hidden fixed left-0 bottom-0 z-35 bg-white" style={{ width: '160px', maxWidth: '160px', height: '100%', top: '0px' }}></div>
-      
-      {/* Desktop: Background on left side - full height coverage */}
-      <div className="desktop-bg-overlay hidden lg:block fixed left-0 bottom-0 z-35 bg-white" style={{ width: '320px', maxWidth: '320px', height: '100%', top: '0px' }}></div>
 
       {/* Fixed Campaign Image - Responsive for Mobile, Tablet, Laptop */}
       {/* Mobile: Fixed at top, full width - starts right below navbar (no gap) */}
@@ -142,38 +167,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Tablet: Fixed on left, medium size */}
-      <div className="tablet-image-container hidden md:block lg:hidden fixed left-0 bottom-0 z-40 bg-white" style={{ width: '160px', maxWidth: '160px', boxSizing: 'border-box', top: '0px' }}>
-        <div className="relative h-full w-full shadow-2xl ring-4 ring-pink-300 bg-white" style={{ overflow: 'hidden', width: '100%', height: '100%', boxSizing: 'border-box', padding: '8px' }}>
-          <Image
-            src="/campaign-image.jpeg"
-            alt="Campaign"
-            width={300}
-            height={800}
-            style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
-            priority
-            sizes="160px"
-          />
-        </div>
-      </div>
-
-      {/* Laptop/Desktop: Fixed on left, larger size */}
-      <div className="desktop-image-container hidden lg:block fixed left-0 bottom-0 z-40 bg-white" style={{ width: '320px', maxWidth: '320px', boxSizing: 'border-box', top: '0px' }}>
-        <div className="relative h-full w-full shadow-2xl ring-4 ring-pink-300 bg-white" style={{ overflow: 'hidden', width: '100%', height: '100%', boxSizing: 'border-box', padding: '16px' }}>
-          <Image
-            src="/campaign-image.jpeg"
-            alt="Campaign"
-            width={400}
-            height={800}
-            style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
-            priority
-            sizes="240px"
-          />
-        </div>
-      </div>
-
       {/* Content - Responsive padding for all screen sizes */}
-      <div className="content-wrapper relative z-10 pt-[280px] sm:pt-[300px] md:pt-24 md:pl-[176px] lg:pt-28 lg:pl-[336px] xl:pt-32 pb-6 sm:pb-8" style={{ 
+      <div className="content-wrapper relative z-10 pt-[280px] sm:pt-[300px] pb-6 sm:pb-8" style={{ 
         width: '100%', 
         maxWidth: '100vw', 
         boxSizing: 'border-box', 

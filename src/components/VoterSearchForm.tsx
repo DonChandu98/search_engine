@@ -35,10 +35,6 @@ export default function VoterSearchForm() {
   };
 
   const handleWardImageContinue = () => {
-    setCurrentStep('candidates');
-  };
-
-  const handleCandidatesContinue = () => {
     setCurrentStep('method');
   };
 
@@ -51,6 +47,10 @@ export default function VoterSearchForm() {
     if (!userInput.trim() || !selectedWard || !selectedSearchMethod) return;
     setError(null);
     setMethodSelected(false);
+    setCurrentStep('candidates');
+  };
+
+  const handleCandidatesContinue = () => {
     setCurrentStep('results');
   };
 
@@ -197,11 +197,21 @@ export default function VoterSearchForm() {
         <div className="mb-3 sm:mb-4 md:mb-6 lg:mb-8 w-full px-2 sm:px-4 md:px-0">
           <div className="flex items-center justify-center overflow-x-auto pb-2 sm:pb-3 md:pb-2 pt-1 sm:pt-2 md:pt-1 w-full max-w-full scrollbar-hide">
             <div className="flex items-center w-full max-w-2xl">
-              {['language', 'ward', 'method', 'results', 'slip'].map((step, index) => {
-                const stepNames = ['language', 'ward', 'method', 'results', 'slip'];
-                const currentIndex = stepNames.indexOf(currentStep);
-                const isActive = index <= currentIndex;
-                const isCurrent = step === currentStep;
+              {['language', 'ward', 'method', 'candidates', 'results', 'slip'].map((step, index) => {
+                // Map current step to progress index (wardImage counts as ward completion)
+                const stepIndexMap: { [key: string]: number } = {
+                  'language': 0,
+                  'ward': 1,
+                  'wardImage': 1, // wardImage is part of ward step
+                  'method': 2,
+                  'candidates': 3,
+                  'results': 4,
+                  'slip': 5
+                };
+                const currentStepIndex = stepIndexMap[currentStep] ?? 0;
+                const stepProgressIndex = stepIndexMap[step] ?? 0;
+                const isActive = stepProgressIndex <= currentStepIndex;
+                const isCurrent = stepProgressIndex === currentStepIndex || (step === 'ward' && currentStep === 'wardImage');
 
                 return (
                   <div key={step} className="flex items-center flex-1">
@@ -216,7 +226,7 @@ export default function VoterSearchForm() {
                         {index + 1}
                       </div>
                     </div>
-                    {index < stepNames.length - 1 && (
+                    {index < 5 && (
                       <div
                         className={`flex-1 h-0.5 sm:h-1 transition-all mx-1 sm:mx-2 ${
                           isActive ? 'bg-gradient-to-r from-blue-500 to-purple-600' : 'bg-gray-200'
@@ -258,11 +268,6 @@ export default function VoterSearchForm() {
         {/* Step 2.5: Ward Image Display */}
         {currentStep === 'wardImage' && selectedLanguage && selectedWard && (
           <WardImageDisplay ward={selectedWard} language={selectedLanguage} onContinue={handleWardImageContinue} />
-        )}
-
-        {/* Step 2.6: Candidate List */}
-        {currentStep === 'candidates' && selectedLanguage && selectedWard && (
-          <CandidateList ward={selectedWard} language={selectedLanguage} onContinue={handleCandidatesContinue} />
         )}
 
         {/* Step 3: Search Method & Input (Combined) */}
@@ -351,6 +356,11 @@ export default function VoterSearchForm() {
               </div>
             )}
           </div>
+        )}
+
+        {/* Step 3.5: Candidate List / EVM Display */}
+        {currentStep === 'candidates' && selectedLanguage && selectedWard && (
+          <CandidateList ward={selectedWard} language={selectedLanguage} onContinue={handleCandidatesContinue} />
         )}
 
         {/* Step 4: Results */}
