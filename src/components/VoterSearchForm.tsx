@@ -195,34 +195,38 @@ export default function VoterSearchForm() {
       {/* Progress Indicator */}
       {selectedLanguage && (
         <div className="mb-3 sm:mb-4 md:mb-6 lg:mb-8 w-full px-2 sm:px-4 md:px-0">
-          <div className="flex items-center justify-center gap-1 sm:gap-2 md:gap-3 lg:gap-4 xl:gap-5 overflow-x-auto pb-2 sm:pb-3 md:pb-2 pt-1 sm:pt-2 md:pt-1 w-full max-w-full scrollbar-hide">
-            {['language', 'ward', 'method', 'results', 'slip'].map((step, index) => {
-              const stepNames = ['language', 'ward', 'method', 'results', 'slip'];
-              const currentIndex = stepNames.indexOf(currentStep);
-              const isActive = index <= currentIndex;
-              const isCurrent = step === currentStep;
+          <div className="flex items-center justify-center overflow-x-auto pb-2 sm:pb-3 md:pb-2 pt-1 sm:pt-2 md:pt-1 w-full max-w-full scrollbar-hide">
+            <div className="flex items-center w-full max-w-2xl">
+              {['language', 'ward', 'method', 'results', 'slip'].map((step, index) => {
+                const stepNames = ['language', 'ward', 'method', 'results', 'slip'];
+                const currentIndex = stepNames.indexOf(currentStep);
+                const isActive = index <= currentIndex;
+                const isCurrent = step === currentStep;
 
-              return (
-                <div key={step} className="flex items-center flex-shrink-0">
-                  <div
-                    className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-bold transition-all ${
-                      isActive
-                        ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg'
-                        : 'bg-gray-200 text-gray-500'
-                    } ${isCurrent ? 'ring-2 sm:ring-3 ring-blue-200 scale-105 sm:scale-110' : ''}`}
-                  >
-                    {index + 1}
+                return (
+                  <div key={step} className="flex items-center flex-1">
+                    <div className="flex items-center justify-center flex-shrink-0">
+                      <div
+                        className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] md:text-xs lg:text-sm font-bold transition-all relative z-10 ${
+                          isActive
+                            ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg'
+                            : 'bg-gray-200 text-gray-500'
+                        } ${isCurrent ? 'ring-2 sm:ring-3 ring-blue-200 scale-105 sm:scale-110' : ''}`}
+                      >
+                        {index + 1}
+                      </div>
+                    </div>
+                    {index < stepNames.length - 1 && (
+                      <div
+                        className={`flex-1 h-0.5 sm:h-1 transition-all mx-1 sm:mx-2 ${
+                          isActive ? 'bg-gradient-to-r from-blue-500 to-purple-600' : 'bg-gray-200'
+                        }`}
+                      />
+                    )}
                   </div>
-                  {index < stepNames.length - 1 && (
-                    <div
-                      className={`w-3 sm:w-4 md:w-5 lg:w-6 h-0.5 sm:h-1 transition-all flex-shrink-0 ${
-                        isActive ? 'bg-gradient-to-r from-blue-500 to-purple-600' : 'bg-gray-200'
-                      }`}
-                    />
-                  )}
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
