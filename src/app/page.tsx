@@ -72,7 +72,7 @@ export default function Home() {
       {/* Banner Navbar - For marketing banner image (dimensions to be provided by graphics team) */}
       {/* Current height: 33vh (1/3 of screen height) - Update this when graphics team provides image */}
       <div className="banner-navbar fixed top-0 left-0 right-0 z-50 w-full bg-white shadow-md border-b-2 border-pink-300" style={{ height: '33vh', boxSizing: 'border-box', maxWidth: '100%' }}>
-        <div className="relative w-full h-full flex items-center justify-center" style={{ width: '100%', height: '100%' }}>
+        <div className="relative w-full h-full overflow-hidden" style={{ width: '100%', height: '100%' }}>
           {/* Responsive banner images - sm (mobile), md (tablet), lg (desktop) */}
           <ResponsiveBanner />
         </div>
