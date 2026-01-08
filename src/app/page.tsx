@@ -1,5 +1,6 @@
 import VoterSearchForm from '@/components/VoterSearchForm';
 import Image from 'next/image';
+import ResponsiveBanner from '@/components/ResponsiveBanner';
 
 export default function Home() {
   return (
@@ -21,6 +22,22 @@ export default function Home() {
           /* Banner navbar positioning - starts at top */
           .banner-navbar {
             top: 0 !important; /* At the very top of the page */
+            width: 100% !important;
+            max-width: 100% !important;
+            left: 0 !important;
+            right: 0 !important;
+          }
+          .banner-navbar picture,
+          .banner-navbar img {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            object-fit: cover !important;
+            display: block !important;
+          }
+          /* Force image reload on resize */
+          .banner-navbar img {
+            image-rendering: auto;
           }
           /* Ensure content doesn't render behind fixed images */
           .content-wrapper {
@@ -54,21 +71,10 @@ export default function Home() {
       
       {/* Banner Navbar - For marketing banner image (dimensions to be provided by graphics team) */}
       {/* Current height: 33vh (1/3 of screen height) - Update this when graphics team provides image */}
-      <div className="banner-navbar fixed top-0 left-0 right-0 z-50 w-full bg-white shadow-md border-b-2 border-pink-300" style={{ height: '33vh', boxSizing: 'border-box' }}>
-        <div className="relative w-full h-full overflow-hidden">
-          {/* TODO: Replace with actual banner image from graphics team */}
-          {/* Recommended dimensions: 1920px width x 720px height (for 2.67:1 aspect ratio, assuming 1080p screen) */}
-          {/* Banner height is 33vh (1/3 of screen) - adjust image aspect ratio accordingly */}
-          <Image
-            src="/campaign-image.jpeg"
-            alt="Marketing Banner"
-            width={1920}
-            height={720}
-            className="w-full h-full object-cover"
-            style={{ objectPosition: 'center' }}
-            priority
-            sizes="100vw"
-          />
+      <div className="banner-navbar fixed top-0 left-0 right-0 z-50 w-full bg-white shadow-md border-b-2 border-pink-300" style={{ height: '33vh', boxSizing: 'border-box', maxWidth: '100%' }}>
+        <div className="relative w-full h-full flex items-center justify-center" style={{ width: '100%', height: '100%' }}>
+          {/* Responsive banner images - sm (mobile), md (tablet), lg (desktop) */}
+          <ResponsiveBanner />
         </div>
       </div>
 
