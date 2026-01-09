@@ -32,7 +32,7 @@ export default function Home() {
             width: 100% !important;
             height: 100% !important;
             max-width: 100% !important;
-            object-fit: contain !important;
+            object-fit: cover !important;
             display: block !important;
           }
           /* Force image reload on resize */

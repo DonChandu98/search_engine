@@ -31,7 +31,7 @@ export default function ResponsiveBanner() {
       <img
         src="/320-190.png"
         alt="Marketing Banner"
-        className="w-full h-full object-contain"
+        className="w-full h-full object-cover"
         style={{ 
           objectPosition: 'center', 
           display: 'block',
